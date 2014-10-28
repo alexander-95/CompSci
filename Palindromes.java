@@ -8,7 +8,7 @@
 *O(Log(n)) algorithm.
 *
 */
-public class IEEE
+public class Palindromes
 {
 	public static void main(String[] args)
 	{
