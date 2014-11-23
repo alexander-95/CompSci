@@ -4,6 +4,9 @@
 *The following program takes 1 string argument which represents a range
 *This algorithm will print how many palindromes are generated when all the
 *numbers are converted to their binary equivalent.
+* 
+* Run the program with an argument of the form "a,b" where a and b are integers and a<b.
+* eg: java Palindromes 0,4000000000
 *
 *O(Log(n)) algorithm.
 *
