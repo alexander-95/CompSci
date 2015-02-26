@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>8086 Assembly Interpreter</title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<script src="script.js"></script>
+	</head>
+	
+	<body>
+		<div id="content" name="content">
+			<h1>8086 Assembly Interpreter</h1>
+			<h3>A visual aid for assembly programming</h3>
+			<p>This web app allows users to create and test assembly language programs</p>
+			
+			<form>
+				input a line of code
+				<br/>
+				Code:<input type="text" size="10" id="code" name="code"><input type="button" value="execute" id="execute" name="execute">
+				Memory(bytes):<input type="text" size="5" id="memsize" name="memsize"><input type="button" value="create" id="create" name="create">
+				<input type="button" value="bin" id="bin" name="bin" onclick="changeBase(2)">
+				<input type="button" value="dec" id="dec" name="dec" onclick="changeBase(10)">
+				<input type="button" value="hex" id="hex" name="hex" onclick="changeBase(16)">
+				<br/><input type="button" value="refresh" id="refresh">
+			</form>
+			<script src="script.js"></script>
+			
+			<table border="1" id = "separation" name="separation" class="8086">
+				<caption>Assembly Layout</caption>
+				<tr><td>Label</td><td>Opcode</td><td>Operand</td><td>Operand 2</td></tr>
+				<tr><td></td><td></td><td></td><td></td></tr>
+			</table>
+			<h3>Debug</h3>
+			<p id="debug" name="debug" style="background-color:#A55;">
+				This contains debug info.
+			</p>
+			
+			<div id="stackdiv">
+				<table id = "Stack" name = "Stack" class="8086" border="1" >
+					<caption>Stack</caption>
+					<tr><td class="data"></td></tr>
+				</table>
+			</div>
+
+			<div id="memdiv">
+				<table border="1" id="Memory" name="Memory" class="8086">
+					<caption>Memory</caption>
+					<tr><td class="data"></td><td></td></tr>
+				</table>
+			</div>
+			
+			<div id = "regdiv">
+				<table border="1" id="mainRegisters" name="mainRegisters" class="8086">
+					<caption>Main Registers</caption>
+					<tr><td></td><td class="data"></td><td class="data"></td><td></td><td></td></tr>
+					<tr><td>AH</td><td id="AH" name="AH" class="AX"></td><td id="AL" name="AL" class="AX"></td><td>AL</td><td>AX</td></tr>
+					<tr><td>BH</td><td id="BH" name="BH" class="BX"></td><td id="BL" name="BL" class="BX"></td><td>BL</td><td>BX</td></tr>
+					<tr><td>CH</td><td id="CH" name="CH" class="CX"></td><td id="CL" name="CL" class="CX"></td><td>CL</td><td>CX</td></tr>
+					<tr><td>DH</td><td id="DH" name="DH" class="DX"></td><td id="DL" name="DL" class="DX"></td><td>DL</td><td>DX</td></tr>
+				</table>
+		
+				<table border="1" id="indexRegisters" name="indexRegisters" class="8086">
+					<caption>Index Registers</caption>
+					<tr><td class="data" id="SI" name="SI"></td><td>SI</td></tr>
+					<tr><td id="DI" name="DI"></td><td>DI</td></tr>
+					<tr><td id="BP" name="BP"></td><td>BP</td></tr>
+					<tr><td id="SP" name="SP"></td><td>SP</td></tr>
+				</table>
+				
+				<table border="1" id="programCounter" name="programCounter" class="8086">
+					<caption>Program Counter</caption>
+					<tr><td class="data" id="IP" name="IP"></td><td>IP</td></tr>
+				</table>
+				
+				<table border="1" id="segmentRegisters" name="segmentRegisters" class="8086">
+					<caption>Segment Registers</caption>
+					<tr><td class="data" id="CS" name="CS"></td><td>CS</td></tr>
+					<tr><td id="ES" name="ES"></td><td>ES</td></tr>
+					<tr><td id="DS" name="DS"></td><td>DS</td></tr>
+					<tr><td id="SS" name="SS"></td><td>SS</td></tr>
+				</table>
+				
+				<table border="1" id="statusRegister" name="statusRegister" class="8086">
+					<caption>Status Register</caption>
+					<tr><td>-</td><td>-</td><td>-</td><td>-</td><td id="O" name="O">0</td><td id="D" name="D">0</td><td id="I" name="I">0</td><td id="T" name="T">0</td><td id="S" name="S">0</td><td id="Z" name="Z">0</td><td>-</td><td id="A" name="A">0</td><td>-</td><td id="P" name="P">0</td><td>-</td><td id="C" name="C">0</td><td>F</td></tr>
+					<tr><td></td><td></td><td></td><td></td><td>O</td><td>D</td><td>I</td><td>T</td><td>S</td><td>Z</td><td></td><td>A</td><td></td><td>P</td><td></td><td>C</td><td></td></tr>
+				</table>
+			</div>
+			<hr style="float:bottom;"/>
+			<footer>
+				<h5><b>Copyright &copy; 2015 Alexander Mitchell</b></h5>
+			</footer>
+		</div>
+	</body>
+</html>
