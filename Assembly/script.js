@@ -55,13 +55,17 @@ Operands can be of 5 types:
 5. a hex value
 
 TO-DO:
-1. create boolean values to check the type of value
-2. create a variable to store the amount of RAM available
-3. move the RAM table into a scrollable box
-4. prevent the stack pointer from going < 0
-5. design a better layout
-6. bug fix for the stoopid peepo: AND with 65535 to set a 16 bit cap and 255 for 8 bit cap
-7. add leading zeros for hex and bin mode
+1.  create boolean values to check the type of value
+2.  create a variable to store the amount of RAM available [done]
+3.  move the RAM table into a scrollable box [done]
+4.  prevent the stack pointer from going < 0
+5.  design a better layout
+6.  bug fix for the stoopid peepo: AND with 65535 to set a 16 bit cap, 255 for 8 bit cap 
+	and 65280 to take the first 8 bits
+7.  add leading zeros for hex and bin mode
+8.  add comments section
+9.  add terminal/console window
+10. check if memory starts at the correct address
 
 for each opcode, add comments containing the number of operands and their possible types
 */
@@ -231,31 +235,7 @@ function execute()
 	 */
 	else if(opcode.toUpperCase()=="ADC")
 	{
-	
-	}
-
-	/*
-		Number of operands:
-		Possibilities for operand1: a
-									a
-		Possibilities for operand2: a
-								
-	 */
-	else if(opcode.toUpperCase()=="ADD")
-	{
-	
-	}
-
-	/*
-		Number of operands:
-		Possibilities for operand1: a
-									a
-		Possibilities for operand2: a
-								
-	 */
-	else if(opcode.toUpperCase()=="AND")
-	{
-		switch(operand2)
+		switch(operand2)//take data from any of the following registers or the operand itself
 	    {
 	    	case "AX":operand2=(ah<<8)+al;break;
 	    	case "BX":operand2=(bh<<8)+bl;break;
@@ -274,7 +254,99 @@ function execute()
 	    	case "BP":operand2=bp;break;
 	    	case "SP":operand2=sp;break;
 	    }
-	    switch(operand)
+	    operand2+=cf;//add on the carry flag
+	    switch(operand)//store the result in one of the following registers
+	    {
+	    	case "AX":ah+=(operand2>>8);al+=(operand2&255);break;
+	    	case "BX":bh+=(operand2>>8);bl+=(operand2&255);break;
+	    	case "CX":ch+=(operand2>>8);cl+=(operand2&255);break;
+	    	case "DX":dh+=(operand2>>8);dl+=(operand2&255);break;
+	    	case "AH":ah+=(operand2&255);break;
+	    	case "BH":bh+=(operand2&255);break;
+	    	case "CH":ch+=(operand2&255);break;
+	    	case "DH":dh+=(operand2&255);break;
+	    	case "AL":al+=(operand2&255);break;
+	    	case "BL":bl+=(operand2&255);break;
+	    	case "CL":cl+=(operand2&255);break;
+	    	case "DL":dl+=(operand2&255);break;
+	    }
+
+	}
+
+	/*
+		Number of operands:
+		Possibilities for operand1: a
+									a
+		Possibilities for operand2: a
+								
+	 */
+	else if(opcode.toUpperCase()=="ADD")
+	{
+		switch(operand2)//take data from any of the following registers or the operand itself
+	    {
+	    	case "AX":operand2=(ah<<8)+al;break;
+	    	case "BX":operand2=(bh<<8)+bl;break;
+	    	case "CX":operand2=(ch<<8)+cl;break;
+	    	case "DX":operand2=(dh<<8)+dl;break;
+	    	case "AH":operand2=ah;break;
+	    	case "BH":operand2=bh;break;
+	    	case "CH":operand2=ch;break;
+	    	case "DH":operand2=dh;break;
+	    	case "AL":operand2=al;break;
+	    	case "BL":operand2=bl;break;
+	    	case "CL":operand2=cl;break;
+	    	case "DL":operand2=dl;break;
+	    	case "SI":operand2=si;break;
+	    	case "DI":operand2=di;break;
+	    	case "BP":operand2=bp;break;
+	    	case "SP":operand2=sp;break;
+	    }
+	    switch(operand)//store the result in one of the following registers
+	    {
+	    	case "AX":ah+=(operand2>>8);al+=(operand2&255);break;
+	    	case "BX":bh+=(operand2>>8);bl+=(operand2&255);break;
+	    	case "CX":ch+=(operand2>>8);cl+=(operand2&255);break;
+	    	case "DX":dh+=(operand2>>8);dl+=(operand2&255);break;
+	    	case "AH":ah+=(operand2&255);break;
+	    	case "BH":bh+=(operand2&255);break;
+	    	case "CH":ch+=(operand2&255);break;
+	    	case "DH":dh+=(operand2&255);break;
+	    	case "AL":al+=(operand2&255);break;
+	    	case "BL":bl+=(operand2&255);break;
+	    	case "CL":cl+=(operand2&255);break;
+	    	case "DL":dl+=(operand2&255);break;
+	    }
+	}
+
+	/*
+		Number of operands:
+		Possibilities for operand1: a
+									a
+		Possibilities for operand2: a
+								
+	 */
+	else if(opcode.toUpperCase()=="AND")
+	{
+		switch(operand2)//take data from any of the following registers or the operand itself
+	    {
+	    	case "AX":operand2=(ah<<8)+al;break;
+	    	case "BX":operand2=(bh<<8)+bl;break;
+	    	case "CX":operand2=(ch<<8)+cl;break;
+	    	case "DX":operand2=(dh<<8)+dl;break;
+	    	case "AH":operand2=ah;break;
+	    	case "BH":operand2=bh;break;
+	    	case "CH":operand2=ch;break;
+	    	case "DH":operand2=dh;break;
+	    	case "AL":operand2=al;break;
+	    	case "BL":operand2=bl;break;
+	    	case "CL":operand2=cl;break;
+	    	case "DL":operand2=dl;break;
+	    	case "SI":operand2=si;break;
+	    	case "DI":operand2=di;break;
+	    	case "BP":operand2=bp;break;
+	    	case "SP":operand2=sp;break;
+	    }
+	    switch(operand)//store the result in one of the following registers
 	    {
 	    	case "AX":ah&=(operand2>>8);al&=(operand2&255);break;
 	    	case "BX":bh&=(operand2>>8);bl&=(operand2&255);break;
@@ -361,7 +433,21 @@ function execute()
 	 */
 	else if(opcode.toUpperCase()=="DEC")
 	{
-	
+		switch(operand)//store the result in one of the following registers
+	    {
+	    	case "AX":ah=(((ah<<8)+al)-1)>>8;al=(((ah<<8)+al)-1)&255;break;//ax=(((ah<<8)+al)+1)
+	    	case "BX":bh=(((bh<<8)+bl)-1)>>8;bl=(((bh<<8)+bl)-1)&255;break;
+	    	case "CX":ch=(((ch<<8)+cl)-1)>>8;cl=(((ch<<8)+cl)-1)&255;break;
+	    	case "DX":dh=(((dh<<8)+dl)-1)>>8;dl=(((dh<<8)+dl)-1)&255;break;
+	    	case "AH":ah--;break;
+	    	case "BH":bh--;break;
+	    	case "CH":ch--;break;
+	    	case "DH":dh--;break;
+	    	case "AL":al--;break;
+	    	case "BL":bl--;break;
+	    	case "CL":cl--;break;
+	    	case "DL":dl--;break;
+	    }
 	}
 
 	/*
@@ -421,7 +507,21 @@ function execute()
 	 */
 	else if(opcode.toUpperCase()=="INC")
 	{
-	
+		switch(operand)//store the result in one of the following registers
+	    {
+	    	case "AX":ah=(((ah<<8)+al)+1)>>8;al=(((ah<<8)+al)+1)&255;break;//ax=(((ah<<8)+al)+1)
+	    	case "BX":bh=(((bh<<8)+bl)+1)>>8;bl=(((bh<<8)+bl)+1)&255;break;
+	    	case "CX":ch=(((ch<<8)+cl)+1)>>8;cl=(((ch<<8)+cl)+1)&255;break;
+	    	case "DX":dh=(((dh<<8)+dl)+1)>>8;dl=(((dh<<8)+dl)+1)&255;break;
+	    	case "AH":ah++;break;
+	    	case "BH":bh++;break;
+	    	case "CH":ch++;break;
+	    	case "DH":dh++;break;
+	    	case "AL":al++;break;
+	    	case "BL":bl++;break;
+	    	case "CL":cl++;break;
+	    	case "DL":dl++;break;
+	    }
 	}
 
 	/*
@@ -555,7 +655,21 @@ function execute()
 	}
 	else if(opcode.toUpperCase()=="NEG")
 	{
-	
+		switch(operand)//store the result in one of the following registers
+	    {
+	    	case "AX":ah=~ah+1;al=~al+1;break;
+	    	case "BX":bh=~bh+1;bl=~bl+1;break;
+	    	case "CX":ch=~ch+1;cl=~cl+1;break;
+	    	case "DX":dh=~dh+1;dl=~dh+1;break;
+	    	case "AH":ah=~ah+1;break;
+	    	case "BH":bh=~bh+1;break;
+	    	case "CH":ch=~ch+1;break;
+	    	case "DH":dh=~dh+1;break;
+	    	case "AL":al=~al+1;break;
+	    	case "BL":bl=~bl+1;break;
+	    	case "CL":cl=~cl+1;break;
+	    	case "DL":dl=~dl+1;break;
+	    }
 	}
 	else if(opcode.toUpperCase()=="NOP")
 	{
@@ -563,7 +677,21 @@ function execute()
 	}
 	else if(opcode.toUpperCase()=="NOT")
 	{
-	
+		switch(operand)//store the result in one of the following registers
+	    {
+	    	case "AX":ah=~ah;al=~al;break;
+	    	case "BX":bh=~bh;bl=~bl;break;
+	    	case "CX":ch=~ch;cl=~cl;break;
+	    	case "DX":dh=~dh;dl=~dh;break;
+	    	case "AH":ah=~ah;break;
+	    	case "BH":bh=~bh;break;
+	    	case "CH":ch=~ch;break;
+	    	case "DH":dh=~dh;break;
+	    	case "AL":al=~al;break;
+	    	case "BL":bl=~bl;break;
+	    	case "CL":cl=~cl;break;
+	    	case "DL":dl=~dl;break;
+	    }
 	}
 	else if(opcode.toUpperCase()=="OR")
 	{
@@ -610,19 +738,21 @@ function execute()
 	{
 		switch(operand)
 	    {
-	    	case "AX":ah|=(operand2>>8);al|=(operand2&255);break;
-	    	case "BX":bh|=(operand2>>8);bl|=(operand2&255);break;
-	    	case "CX":ch|=(operand2>>8);cl|=(operand2&255);break;
-	    	case "DX":dh|=(operand2>>8);dl|=(operand2&255);break;
-	    	case "AH":ah|=(operand2&255);break;
-	    	case "BH":bh|=(operand2&255);break;
-	    	case "CH":ch|=(operand2&255);break;
-	    	case "DH":dh|=(operand2&255);break;
-	    	case "AL":al|=(operand2&255);break;
-	    	case "BL":bl|=(operand2&255);break;
-	    	case "CL":cl|=(operand2&255);break;
-	    	case "DL":dl|=(operand2&255);break;
+	    	case "AX":ah=(stack[65535-sp]>>8);al=(stack[65535-sp]&255);break;
+	    	case "BX":bh=(stack[65535-sp]>>8);bl=(stack[65535-sp]&255);break;
+	    	case "CX":ch=(stack[65535-sp]>>8);cl=(stack[65535-sp]&255);break;
+	    	case "DX":dh=(stack[65535-sp]>>8);dl=(stack[65535-sp]&255);break;
+	    	case "AH":ah=(stack[65535-sp]&255);break;
+	    	case "BH":bh=(stack[65535-sp]&255);break;
+	    	case "CH":ch=(stack[65535-sp]&255);break;
+	    	case "DH":dh=(stack[65535-sp]&255);break;
+	    	case "AL":al=(stack[65535-sp]&255);break;
+	    	case "BL":bl=(stack[65535-sp]&255);break;
+	    	case "CL":cl=(stack[65535-sp]&255);break;
+	    	case "DL":dl=(stack[65535-sp]&255);break;
 	    }
+	    sp++;//increment stack pointer
+	    SP.innerHTML=sp;//refresh the stack pointer
 	}
 	else if(opcode.toUpperCase()=="POPF")
 	{
