@@ -47,3 +47,12 @@ body
 	height:500px;
 	background-color:#FFF;
 }
+#console
+{
+	width:320px;
+	height:240px;
+	background-color:#000;
+	color:#0F0;
+	font-family:courier;
+	font-size:14px;
+}
