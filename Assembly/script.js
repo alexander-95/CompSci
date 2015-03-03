@@ -16,10 +16,10 @@ var memory;//an array to store all values stored in memory
 var size=0;//stores the size of the memory array
 var stack = new Array(65536);//an array to store all variables stored on the stack
 
-var ax=0,ah=0,al=0;//accumulator register
-var bx=0,bh=0,bl=0;//base register
-var cx=0,ch=0,cl=0;//counter register
-var dx=0,dh=0,dl=0;//data register
+var ah=0,al=0;//accumulator register
+var bh=0,bl=0;//base register
+var ch=0,cl=0;//counter register
+var dh=0,dl=0;//data register
 
 var si=0,//source index
 	di=0,//destination index
@@ -66,6 +66,7 @@ TO-DO:
 8.  add comments section
 9.  add terminal/console window
 10. check if memory starts at the correct address
+11. remove all instances of ax,bx,cx and dx variables [done]
 
 for each opcode, add comments containing the number of operands and their possible types
 */
