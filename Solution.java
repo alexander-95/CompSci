@@ -224,13 +224,6 @@ public class Solution {
 				while(s2.hasNext()){
 					String label = s2.next();
 					/* ... */
-					String[] labels = label.split(" ");
-					Graph dijkstra = new Graph();
-					for(int i = 0; i<labels.length; i++)
-					{
-						//System.out.println(labels[i]);
-						dijkstra.addNode(labels[i]);
-					}
 				}
 			} else {
 				//Each other line is a link
@@ -240,7 +233,6 @@ public class Solution {
 				} else {
 					String to_label = s2.next();
 					int cost = s2.nextInt();
-					dijkstra.getNodeWithLabel(from_label).addLink(dijkstra.getNodeWithLabel(to_label), cost);
 					/* ... */
 				}
 
