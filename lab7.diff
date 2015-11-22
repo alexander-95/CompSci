@@ -1,0 +1,291 @@
+diff --git a/Solution.java b/Solution.java
+index 19092f6..508d40a 100644
+--- a/Solution.java
++++ b/Solution.java
+@@ -16,24 +16,24 @@ public class Solution {
+ 
+ 		//A graph consists of nodes and links
+ 		private static class Node implements Comparable<Node> {
+-
++			
+ 			//Each node is identified by a label
+ 			private String label_;
+ 			//Each node stores a map of adjacent links with their costs
+ 			private Map<Node, Integer> links_;
+-
+-			//Each node keeps track of the current cost from a source node to itself
++			
++			//Each node keeps track of the current cost from a source node to itself 
+ 			private int tmp_cost_;
+ 			//Each node keeps track of the source of the incoming link that lead to the current cost
+ 			private Node ingoing_;
+-
++			
+ 			//Constructor from label
+ 			public Node(String label){
+ 				this.label_ = label;
+ 				this.links_ = new HashMap<Node, Integer>();
+ 				this.resetCost();
+ 			}
+-
++			
+ 			//Setters, getters
+ 			public void setIngoing(Node n){
+ 				this.ingoing_ = n;
+@@ -50,12 +50,12 @@ public class Solution {
+ 			public void setCurrentCost(int cost){
+ 				this.tmp_cost_ = cost;
+ 			}
+-
+-			//Add an adjacent link
++			
++			//Add an adjacent link 
+ 			public void addLink(Node node, int cost){
+ 				this.links_.put(node, new Integer(cost));
+ 			}
+-
++			
+ 			//Reset the current cost to +Inf
+ 			public void resetCost(){
+ 				this.tmp_cost_ = Integer.MAX_VALUE;
+@@ -65,12 +65,12 @@ public class Solution {
+ 			public boolean hasLabel(String label){
+ 				return label.equals(this.label_);
+ 			}
+-
++			
+ 			//Returns true if this node has a link to the given node
+ 			public boolean hasLink(Node to){
+ 				return this.links_.containsKey(to);
+ 			}
+-
++			
+ 			//Returns the cost of the link from this node to the given node
+ 			public int getLinkCost(Node to){
+ 				if(this.hasLink(to)){
+@@ -79,7 +79,7 @@ public class Solution {
+ 					return Integer.MAX_VALUE;
+ 				}
+ 			}
+-
++			
+ 			//Override compareTo to made node comparable (by cost)
+ 			@Override
+ 			public int compareTo(Node arg0) {
+@@ -95,31 +95,34 @@ public class Solution {
+ 			}
+ 
+ 		} //end class Node
+-
++		
+ 		//A Graph consists of a list of nodes
+ 		private List<Node> nodes_;
+-
++		
+ 		//The algorithm must keep track of the visited nodes
+-		//Here we keep track of the non-visited nodes
++		//Here we keep track of the non-visited nodes 
+ 		private Set<Node> unvisited_;
+-
++		
+ 		//Constructor
+ 		//After construction the Graph is empty !!!!!!
+ 		public Graph(){
+ 			this.nodes_ = new LinkedList<Node>();
+ 			this.unvisited_ = new HashSet<Node>();
+ 		}
+-
++		
+ 		//Init and add a node to this graph
+ 		public void addNode(String label){
+ 			this.nodes_.add(new Node(label));
+ 		}
+-
++		
+ 		//Add a link between two nodes
+ 		public void addLink(String from_label, String to_label, int cost){
+-			/* ... */
++			Node from = this.getNodeWithLabel(from_label);
++			Node to = this.getNodeWithLabel(to_label);
++			from.addLink(to, cost);
++			to.addLink(from, cost);
+ 		}
+-
++		
+ 		//Add all the current nodes to the set of unvisited nodes
+ 		public void initUnvisited(){
+ 			this.unvisited_.clear();
+@@ -130,13 +133,13 @@ public class Solution {
+ 			}
+ 		}
+ 
+-		//Removes the node that corresponds to the given label from the
++		//Removes the node that corresponds to the given label from the 
+ 		//set of unvisited nodes
+ 		public void removeVisited(String label){
+ 			Node n = this.getNodeWithLabel(label);
+ 			this.unvisited_.remove(n);
+ 		}
+-
++		
+ 		//Returns the node with the given label
+ 		public Node getNodeWithLabel(String label){
+ 			Iterator<Node> it = this.nodes_.iterator();
+@@ -148,7 +151,7 @@ public class Solution {
+ 			}
+ 			return null;
+ 		}
+-
++		
+ 		//Resets all the node costs of this graph
+ 		public void resetCosts(){
+ 			Iterator<Node> it = this.nodes_.iterator();
+@@ -157,13 +160,13 @@ public class Solution {
+ 				n.resetCost();
+ 			}
+ 		}
+-
++		
+ 		//Setter
+ 		public void setNodeCurrentCost(String label, int cost){
+ 			Node n = this.getNodeWithLabel(label);
+ 			n.setCurrentCost(cost);
+ 		}
+-
++		
+ 
+ 		//Print the current costs for each node of the graph
+ 		public String toString(){
+@@ -182,38 +185,59 @@ public class Solution {
+ 			}
+ 			return s;
+ 		}
+-
++		
+ 		//Returns true if the node that corresponds to the given label has not been visited
+ 		public boolean isUnvisited(String label){
+ 			Node n = this.getNodeWithLabel(label);
+ 			return this.unvisited_.contains(n);
+ 		}
+-
+-		//Sorts the unvisited nodes by cost and returns the one with the smallest cost
++		
++		//Sorts the unvisited nodes by cost and returns the one with the smallest cost 
+ 		public String getUnivisitedNodewithSmallestCurrentCost(){
+ 			TreeSet<Node> sortedSet = new TreeSet<Node>(this.unvisited_);
+ 			return sortedSet.first().getLabel();
+ 		}
+-
++		
+ 
+ 		//Update of the costs from the node that corresponds to the given label
+ 		public void updateCosts(String from_label){
+-                             /* ... */
++			//Get current cost
++			Node from = this.getNodeWithLabel(from_label);
++			int from_cost = from.getCurrentCost();
++			
++			//For each unvisited node
++			Iterator<Node> it = this.unvisited_.iterator();
++			while(it.hasNext()){
++				Node to = it.next();
++				//Get previous cost
++				int previous_cost = to.getCurrentCost();
++				//Get link cost
++				if(from.hasLink(to)){
++					int link_cost = from.getLinkCost(to);
++					int new_cost = from_cost + link_cost;
++					if (new_cost < previous_cost){
++						//Update cost
++						to.setCurrentCost(new_cost);
++						//Memorise ingoing node
++						to.setIngoing(from);
++					}
++				}
++			}
+ 		}
+-
+-
++		
++		
+ 	}//end class Graph
+-
++	
+ 	/**
+ 	 * @param args
+ 	 */
+ 	public static void main(String[] args) throws Exception {
+-
++		
+ 	    /* Enter your code here. Read input from STDIN. Print output to STDOUT*/
+-
++		
+ 		//Read stdin
+ 		Graph g = new Graph();
+-		Scanner s = new Scanner(System.in);
++		Scanner s = new Scanner(System.in); 
+ 		int cpt=0;
+ 		boolean go = true;
+ 		while(go){
+@@ -223,7 +247,7 @@ public class Solution {
+ 				//First line = list of nodes
+ 				while(s2.hasNext()){
+ 					String label = s2.next();
+-					/* ... */
++					g.addNode(label);
+ 				}
+ 			} else {
+ 				//Each other line is a link
+@@ -233,26 +257,45 @@ public class Solution {
+ 				} else {
+ 					String to_label = s2.next();
+ 					int cost = s2.nextInt();
+-					/* ... */
++					g.addLink(from_label, to_label, cost);
+ 				}
+ 
+ 			}
+ 			cpt++;
+ 		}
+ 		s.close();
+-
+-		//Init
++				
++		//Init 
+ 		//Reset all costs
+ 		String source = "A";
+ 		String dest = "Z";
+-                /* ... */
+-
++		g.resetCosts();
++		g.initUnvisited();
++		g.setNodeCurrentCost(source, 0);
++		System.out.println(g);
++		
+ 
+ 		//Loop
+-                /* ... */
++		while(g.isUnvisited(dest)){
++			
++			//Select unvisited node with smallest current cost
++			String selected = g.getUnivisitedNodewithSmallestCurrentCost();
++		
++			//Remove selected from the list
++			g.removeVisited(selected);
++
++			//Update costs
++			g.updateCosts(selected);
++			System.out.println(g);
++		}
+ 
+ 		//Retrieve the least-cost path from destination to source
+-		/* ... */
++		String label = dest;
++		do {
++			System.out.print(label+" < ");
++			label = g.getNodeWithLabel(label).getIngoing().getLabel();
++		} while(!label.equals(source));
++		System.out.println(source);
+ 
+ 	}//end main
+ 
